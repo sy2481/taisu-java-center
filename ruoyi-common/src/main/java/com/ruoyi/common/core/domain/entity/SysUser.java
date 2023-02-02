@@ -258,6 +258,17 @@ public class SysUser extends BaseEntity
      * sn號碼
      */
     private String snNum;
+
+    private String[] empNos;
+
+    public String[] getEmpNos() {
+        return empNos;
+    }
+
+    public void setEmpNos(String[] empNos) {
+        this.empNos = empNos;
+    }
+
     public String getDeptName() {
         return deptName;
     }

@@ -164,6 +164,8 @@ public interface SysUserMapper {
 
     int deleteFaceByUserId(@Param("userId") Long userId);
 
+    int deleteFaceByIdCard(@Param("idCard") String idCard);
+
     List<SysUser> selectByEmpNo(@Param("empNo") String empNo);
 
     /**
@@ -172,6 +174,9 @@ public interface SysUserMapper {
      * @param idCards 身份证号
      */
     List<SysUser> selectListFaceByIdCards(@Param("idCards")List<String> idCards);
+
+
+    List<SysUser> selectAllListFaceByIdCards();
 
     /**
      * 根据身份证更新头像

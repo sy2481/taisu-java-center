@@ -19,8 +19,8 @@ public class CenterUserServiceImpl implements CenterUserService {
     /**
      * 中心-host
      */
-    @Value("${ae.host}")
-    private String aeHost;
+//    @Value("${ae.host}")
+//    private String aeHost;
     @Autowired
     private ISysUserService userService;
 
@@ -68,7 +68,7 @@ public class CenterUserServiceImpl implements CenterUserService {
         sysUser.setCarId(null);
         sysUser.setCarCard(null);
         String userJson = JSONObject.toJSONString(sysUser);
-        String httpStr = aeHost + "/api/sync/syncUser";
+        String httpStr = "aeHost" + "/api/sync/syncUser";
         System.out.println("发送的请求 : " + httpStr);
         String resultStr = HttpUtils.sendJsonPost(httpStr, userJson);
         if (StringUtils.isEmpty(resultStr)){

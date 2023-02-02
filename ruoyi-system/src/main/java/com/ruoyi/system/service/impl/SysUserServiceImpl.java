@@ -651,10 +651,16 @@ public class SysUserServiceImpl implements ISysUserService {
             sysUserCenter = new SysUser();
             BeanUtils.copyProperties(sysUser, sysUserCenter);
             sysUserCenter.setUserId(null);
+
             userMapper.insertUser(sysUserCenter);
 
         }else{//有数据
+            sysUserCenter.setNickName(sysUser.getNickName());
+            sysUserCenter.setPhonenumber(sysUser.getPhonenumber());
+            sysUserCenter.setSex(sysUser.getSex());
             sysUserCenter.setFace(sysUser.getFace());
+            sysUserCenter.setFamilyAddress(sysUser.getFamilyAddress());
+            sysUserCenter.setSended(sysUser.getSended());
             userMapper.updateUser(sysUserCenter);
         }
     }
@@ -689,6 +695,21 @@ public class SysUserServiceImpl implements ISysUserService {
     public Map<String,SysUser> getListByIdCards(List<String> idCards){
         Map<String,SysUser> map=new HashMap<String ,SysUser>();
         List<SysUser> list= userMapper.selectListFaceByIdCards(idCards);
+        for (SysUser item:list){
+            String key=item.getIdCard();
+            if(!map.containsKey(key)){
+                map.put(key,item);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 根据身份证获取
+     */
+    public Map<String,SysUser> getAllListByIdCards(){
+        Map<String,SysUser> map=new HashMap<String ,SysUser>();
+        List<SysUser> list= userMapper.selectAllListFaceByIdCards();
         for (SysUser item:list){
             String key=item.getIdCard();
             if(!map.containsKey(key)){

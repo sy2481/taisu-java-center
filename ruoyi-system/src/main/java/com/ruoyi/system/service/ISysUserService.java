@@ -250,6 +250,8 @@ public interface ISysUserService
      */
     Map<String, SysUser> getListByIdCards(List<String> noFaceIdCardList);
 
+    Map<String, SysUser> getAllListByIdCards();
+
     /**
      * 查询未做同步的员工
      */

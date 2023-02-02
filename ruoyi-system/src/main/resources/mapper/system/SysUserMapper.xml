@@ -169,7 +169,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="existenceFace ==0">and (face !='' OR face IS NOT NULL)</if>
 		<if test="existenceFace ==1">and (face ='' OR face IS  NULL)</if>
 <if test="factoryStr!=null"></if>
-
+		<if test="empNos != null and empNos.length >0 ">
+			and u.emp_no in
+			<foreach collection="empNos" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
 	</select>
 
 	<select id="selectAllocatedList" parameterType="SysUser" resultMap="SysUserResult">
@@ -280,7 +285,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="positionCardNo != null and positionCardNo != ''">position_card_no,</if>
  			<if test="snNum != null and snNum != ''">sn_num,,</if>
  			<if test="joinDate != null and joinDate != ''">join_date,</if>
- 			<if test="sended != null and sended != ''">sended,</if>
+ 			<if test="sended != null ">sended,</if>
  			<if test="plc != null and plc != ''">plc,</if>
 			<if test="pvcFlag!=null">pvc_flag,</if>
 		<if test="ppFlag!=null">pp_flag,</if>
@@ -314,7 +319,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="positionCardNo != null and positionCardNo != ''">#{positionCardNo},</if>
 			<if test="snNum != null and snNum != ''">#{snNum},</if>
 			<if test="joinDate != null and joinDate != ''">#{joinDate},</if>
-			<if test="sended != null and sended != ''">#{sended},</if>
+			<if test="sended != null ">#{sended},</if>
 			<if test="plc != null and plc != ''">#{plc},</if>
 		<if test="pvcFlag!=null">#{pvcFlag},</if>
 		<if test="ppFlag!=null">#{ppFlag},</if>
@@ -354,7 +359,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="positionCardNo != null">position_card_no = #{positionCardNo},</if>
 			<if test="snNum != null">sn_num = #{snNum},</if>
 			<if test="joinDate != null and joinDate != ''">join_date = #{joinDate},</if>
-			<if test="sended != null and sended != ''">sended = #{sended},</if>
+			<if test="sended != null">sended = #{sended},</if>
 			plc = #{plc},
  			update_time = getdate()
  		</set>
@@ -390,18 +395,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteFaceByUserId">
 		update sys_user set face = null, sended = 0 where user_id = #{userId}
 	</delete>
+	<delete id="deleteFaceByIdCard">
+		update sys_user set face = null,sended=8 where id_card = #{idCard}
+	</delete>
+
 
 	<select id="selectByEmpNo" parameterType="java.lang.String" resultType="com.ruoyi.common.core.domain.entity.SysUser">
 
 		SELECT * FROM sys_user WHERE emp_no=#{empNo} and del_flag = '0'
 	</select>
 
-	<select id="selectListFaceByIdCards" parameterType="java.util.List" resultMap="SysUserResult">
+	<select id="selectListFaceByIdCardsOld" parameterType="java.util.List" resultMap="SysUserResult">
 		<include refid="selectUserVo"/>
 		where u.del_flag = '0' and u.face is not null and u.id_card in
 		<foreach collection="idCards" index="index" item="item" open="(" separator="," close=")">
 			#{item}
 		</foreach>
+	</select>
+
+	<select id="selectListFaceByIdCards" parameterType="java.util.List" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		where u.del_flag = '0'
+		<if test="idCards != null and idCards.length >0 ">
+			and u.id_card in
+			<foreach collection="idCards" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="selectAllListFaceByIdCards" parameterType="java.util.List" resultMap="SysUserResult">
+		<include refid="selectUserVo"/>
+		where u.del_flag = '0' and u.face is not null
 	</select>
 
 	<update id="updateFaceByIdCard">

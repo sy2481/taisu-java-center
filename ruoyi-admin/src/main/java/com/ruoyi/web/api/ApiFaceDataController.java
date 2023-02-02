@@ -252,5 +252,15 @@ public class ApiFaceDataController {
         }
     }
 
+    @PostMapping("/deleteFaceCenterUser")
+    public AjaxResult deleteFaceCenterUser(@RequestBody IdCardDTO idcard) {
+        try {
+            sysUserMapper.deleteFaceByIdCard(idcard.getIdCard());
 
+            return AjaxResult.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error("操作失敗，請稍後再試。");
+        }
+    }
 }

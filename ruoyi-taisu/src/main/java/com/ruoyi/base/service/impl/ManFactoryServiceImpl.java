@@ -322,6 +322,8 @@ public class ManFactoryServiceImpl implements IManFactoryService {
             manFactoryCenter.setFace(manFactory.getFace());
             manFactoryCenter.setPhone(manFactory.getPhone());
             manFactoryCenter.setAddress(manFactory.getAddress());
+            manFactoryCenter.setSex(manFactory.getSex());
+            manFactoryCenter.setName(manFactory.getName());
             manFactoryMapper.updateManFactory(manFactoryCenter);
         }
     }
