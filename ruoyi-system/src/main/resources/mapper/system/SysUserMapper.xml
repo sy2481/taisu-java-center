@@ -416,7 +416,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectListFaceByIdCards" parameterType="java.util.List" resultMap="SysUserResult">
 		<include refid="selectUserVo"/>
 		where u.del_flag = '0'
-		<if test="idCards != null and idCards.length >0 ">
+		<if test="idCards != null and idCards.size >0 ">
 			and u.id_card in
 			<foreach collection="idCards" index="index" item="item" open="(" separator="," close=")">
 				#{item}

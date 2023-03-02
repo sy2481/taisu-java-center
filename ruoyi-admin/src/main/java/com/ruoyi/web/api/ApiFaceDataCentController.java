@@ -3,7 +3,10 @@ package com.ruoyi.web.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
+import com.ruoyi.base.domain.HcUser;
 import com.ruoyi.base.domain.ManFactory;
+import com.ruoyi.base.mapper.HcUserMapper;
+import com.ruoyi.base.service.IHcUserService;
 import com.ruoyi.base.service.IManFactoryService;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysDept;
@@ -41,6 +44,9 @@ public class ApiFaceDataCentController {
 
     @Autowired
     private SysUserMapper sysUserMapper;
+
+    @Autowired
+    private IHcUserService hcUserService;
 
 
 
@@ -151,6 +157,32 @@ public class ApiFaceDataCentController {
             List<SysUser> list = sysUserMapper.selectUserListAll(paramUser);
 
             return Response.builder().code(0).data(list).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Response.error("查詢出錯，請稍後再試！");
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/saveFaceForHc")
+    public Response saveFaceForHc(@RequestBody HcUser hcUser) {
+        try {
+            hcUserService.saveFaceForCenter(hcUser);
+            return Response.success("保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Response.error("查詢出錯，請稍後再試！");
+    }
+
+    @ResponseBody
+    @PostMapping("/getListByIdCardsForHc")
+    public Response getListByIdCardsForHc(@RequestBody JSONObject param) {
+        try {
+            List<String> noFaceIdCardList = Arrays.asList(param.getString("noFaceIdCards").split(","));
+            Map<String, HcUser> noFaceManFactoryMap = hcUserService.getEntityMap(noFaceIdCardList);
+
+            return Response.builder().code(0).data(noFaceManFactoryMap).build();
         } catch (Exception e) {
             e.printStackTrace();
         }
